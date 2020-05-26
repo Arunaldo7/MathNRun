@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class ScorableObjectController : MonoBehaviour
 {
-     private GameObject player;
+    private GameObject player;
 
     private PlayerScoreController playerScoreController;
 
+    [SerializeField] private int count;
+
     [SerializeField] private int score;
 
-    [SerializeField] private int count;
 
     [SerializeField] AudioClip soundToPlay;
     void Start()
@@ -21,15 +22,24 @@ public class ScorableObjectController : MonoBehaviour
 
     private void OnTriggerEnter(Collider target)
     {
-        
+
         if (target.gameObject.tag == "Player")
         {
+
+            if (gameObject.tag == "Coin Normal")
+            {
+                playerScoreController.AddCoinCount(count);
                 playerScoreController.AddScore(score);
-                if(gameObject.tag == "Coin Normal"){
-                    playerScoreController.AddCoinCount(count);
-                }
                 AudioSource.PlayClipAtPoint(soundToPlay, transform.position);
                 Destroy(gameObject);
+            }
+            else if (gameObject.tag == "Correct Option")
+            {
+                playerScoreController.AddScore(score);
+                AudioSource.PlayClipAtPoint(soundToPlay, transform.position);
+                Destroy(gameObject);
+            }
+
         }
     }
 

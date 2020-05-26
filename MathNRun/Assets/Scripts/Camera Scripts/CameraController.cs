@@ -41,8 +41,6 @@ public class CameraController : MonoBehaviour
 
         desiredX = Mathf.Lerp(player.transform.position.x, transform.position.x, smoothSpeed);
 
-        Debug.Log(player.gameObject.GetComponent<PlayerController>().inPath);
-
         //if in elevated path, camera height follows player height
         //else it is static as initial camera height
         if (player.gameObject.GetComponent<PlayerController>().inPath)

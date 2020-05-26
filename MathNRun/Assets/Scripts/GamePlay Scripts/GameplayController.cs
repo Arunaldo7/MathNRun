@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameplayController : MonoBehaviour
 {
@@ -11,6 +12,10 @@ public class GameplayController : MonoBehaviour
     [SerializeField] private GameObject[] collectibleObjects;
 
     [SerializeField] private GameObject elevatedPathObject;
+
+    [SerializeField] private GameObject[] optionsList;
+
+    [SerializeField] private string correctOptionTag;
 
     [SerializeField] private GameObject caveObject;
     [SerializeField] private Transform[] lanes;
@@ -28,8 +33,11 @@ public class GameplayController : MonoBehaviour
     [SerializeField] private float minElevatedPathDelay;
     [SerializeField] private float maxElevatedPathDelay;
 
-    [SerializeField] private float minCaveDelay = 50f;
-    [SerializeField] private float maxCaveDelay = 200f;
+    [SerializeField] private float minCaveDelay;
+    [SerializeField] private float maxCaveDelay;
+
+    [SerializeField] private float minQuestionDelay;
+    [SerializeField] private float maxQuestionDelay;
 
     public float lastCavePos;
 
@@ -42,6 +50,12 @@ public class GameplayController : MonoBehaviour
     [SerializeField] private int caveSpawnChance;
     [SerializeField] private int elevatedPathSpawnChance;
 
+    [SerializeField] private int questionSpawnChance;
+
+    private ArrayList optionsNumberList = new ArrayList();
+
+
+
     private float speedMultiplier;
     private void Awake()
     {
@@ -51,6 +65,11 @@ public class GameplayController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //optionsNumberList add options numbers
+        optionsNumberList.Add(0);
+        optionsNumberList.Add(1);
+        optionsNumberList.Add(2);
+
         groundLength = GameObject.Find("GroundBlock").GetComponent<GenerateEnv>().groundLength;
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
 
@@ -78,12 +97,11 @@ public class GameplayController : MonoBehaviour
         {
             StartCoroutine("GenerateElevatedPathObjects");
         }
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-
+        if (optionsList != null)
+        {
+            StartCoroutine("GenerateQuestion");
+        }
     }
 
     void MakeInstance()
@@ -95,6 +113,57 @@ public class GameplayController : MonoBehaviour
         else
         {
             Destroy(gameObject);
+        }
+    }
+
+    IEnumerator GenerateQuestion()
+    {
+        float timer = Random.Range(minQuestionDelay, maxQuestionDelay) / playerController.frontSpeed;
+        yield return new WaitForSeconds(timer);
+
+
+        CreateQuestion(playerController.gameObject.transform.position.z);
+
+        StartCoroutine("GenerateQuestion");
+    }
+
+    void CreateQuestion(float playerPos)
+    {
+        int randomNum = Random.Range(0, 10);
+
+        int maxNum = questionSpawnChance / 10;
+
+        if (0 <= randomNum && randomNum <= maxNum)
+        {
+            speedMultiplier = playerController.frontSpeed / 5f;
+
+            float optionsZPos = playerPos + playerController.frontSpeed + (groundLength / 2);
+
+            ArrayList optionsNumberListClone = (ArrayList)optionsNumberList.Clone();
+
+            for (int i = 0; i < 3; i++)
+            {
+                int optionNumber = Random.Range(0, optionsNumberListClone.Count);
+
+                GameObject optionObject = optionsList[(int)optionsNumberListClone[optionNumber]];
+
+                optionsNumberListClone.RemoveAt(optionNumber);
+
+                Vector3 optionObjectPos = new Vector3(optionObject.transform.position.x, optionObject.transform.position.y, optionsZPos);
+                if (i == 0)
+                {
+                    optionObject.GetComponentInChildren<Text>().text = i.ToString();
+                    optionObject.tag = correctOptionTag;
+                    optionObject.GetComponent<BoxCollider>().isTrigger = true;
+                }
+                else
+                {
+                    optionObject.tag = "Obstacle";
+                    optionObject.GetComponentInChildren<Text>().text = "nono";
+                }
+                SpawnObstacle(optionObjectPos, optionObject);
+            }
+
         }
     }
 

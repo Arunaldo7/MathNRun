@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Elevated Path
+  - Coin Normal
+  - Obstacle
+  - Cave
+  - Lane
+  - Path
+  - Correct Option
   layers:
   - Default
   - TransparentFX

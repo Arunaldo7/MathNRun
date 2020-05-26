@@ -187,5 +187,4 @@ public class PlayerController : MonoBehaviour
             Time.timeScale = 0;
         }
     }
-
 }

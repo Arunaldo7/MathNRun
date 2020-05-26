@@ -17,7 +17,6 @@ public class PathController : MonoBehaviour
             anim.SetBool("run", true);
             anim.SetBool("jump", false);
             target.gameObject.GetComponent<PlayerController>().dust.Play();
-            Debug.Log(gameObject.tag);
             if (gameObject.tag == "Path")
             {
                 target.gameObject.GetComponent<PlayerController>().inPath = true;
