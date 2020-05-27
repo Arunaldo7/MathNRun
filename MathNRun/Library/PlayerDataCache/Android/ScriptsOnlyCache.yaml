@@ -515,7 +515,7 @@ ScriptsOnlyBuild:
     className: LightPreset
   - hash:
       serializedVersion: 2
-      Hash: 9e805d9d1081613bc95ae6e81385c719
+      Hash: ad4ff05ef13851edd3b9f3c8d3a633e3
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerScoreController
@@ -629,7 +629,7 @@ ScriptsOnlyBuild:
     className: Physics2DRaycaster
   - hash:
       serializedVersion: 2
-      Hash: 7d8f2669b8c57f3ce39310257c3646c8
+      Hash: ce8dd2394aacf9986e53755eb321aefe
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GameplayController

@@ -52,13 +52,14 @@ public class GameplayController : MonoBehaviour
     [SerializeField] private int caveSpawnChance;
     [SerializeField] private int elevatedPathSpawnChance;
 
+    [SerializeField] private int collectibleObjectSpawnChance;
+
+
     [SerializeField] private int questionSpawnChance;
 
     private string[] operators = { "+", "-", "*", "/" };
 
     private ArrayList optionsNumberList = new ArrayList();
-
-    private bool createQuestion;
 
 
     private float speedMultiplier;
@@ -103,7 +104,6 @@ public class GameplayController : MonoBehaviour
             StartCoroutine("GenerateElevatedPathObjects");
         }
 
-        createQuestion = true;
         if (optionsList != null)
         {
             StartCoroutine("GenerateQuestion");
@@ -141,7 +141,6 @@ public class GameplayController : MonoBehaviour
         switch (selectedOperator)
         {
             case "+":
-                Debug.Log("ans:" + (number2 + number1));
                 return number1 + number2;
             case "-":
                 return number1 - number2;
@@ -223,22 +222,22 @@ public class GameplayController : MonoBehaviour
 
             int[] wrongOptionOneNumbers = ChooseNumbers(selectedOperator);
 
-            while (wrongOptionOneNumbers[0] == questionNumbers[0] && wrongOptionOneNumbers[1] == questionNumbers[1])
-            {
-                wrongOptionOneNumbers = ChooseNumbers(selectedOperator);
-            }
-
             wrongAnswers[0] = GetCorrectAnswer(selectedOperator, wrongOptionOneNumbers[0], wrongOptionOneNumbers[1]);
 
-            int[] wrongOptionTwoNumbers = ChooseNumbers(selectedOperator);
-
-            while ((wrongOptionTwoNumbers[0] == questionNumbers[0] && wrongOptionTwoNumbers[1] == questionNumbers[1]) &&
-                    (wrongOptionTwoNumbers[0] == wrongOptionOneNumbers[0] && wrongOptionTwoNumbers[1] == wrongOptionOneNumbers[1]))
+            while (wrongAnswers[0] == correctAnswer)
             {
-                wrongOptionTwoNumbers = ChooseNumbers(selectedOperator);
+                wrongOptionOneNumbers = ChooseNumbers(selectedOperator);
+                wrongAnswers[0] = GetCorrectAnswer(selectedOperator, wrongOptionOneNumbers[0], wrongOptionOneNumbers[1]);
             }
 
+            int[] wrongOptionTwoNumbers = ChooseNumbers(selectedOperator);
             wrongAnswers[1] = GetCorrectAnswer(selectedOperator, wrongOptionTwoNumbers[0], wrongOptionTwoNumbers[1]);
+
+            while (wrongAnswers[1] == correctAnswer && wrongAnswers[1] == wrongAnswers[0])
+            {
+                wrongOptionTwoNumbers = ChooseNumbers(selectedOperator);
+                wrongAnswers[1] = GetCorrectAnswer(selectedOperator, wrongOptionTwoNumbers[0], wrongOptionTwoNumbers[1]);
+            }
 
 
             question.GetComponentInChildren<Text>().text = questionNumbers[0].ToString() + selectedOperator + questionNumbers[1].ToString();
@@ -246,6 +245,7 @@ public class GameplayController : MonoBehaviour
 
             ArrayList optionsNumberListClone = (ArrayList)optionsNumberList.Clone();
 
+            Vector3 optionObjectPos = new Vector3(0f, 0f, 0f);
             for (int i = 0; i < 3; i++)
             {
                 int optionNumber = Random.Range(0, optionsNumberListClone.Count);
@@ -254,7 +254,8 @@ public class GameplayController : MonoBehaviour
 
                 optionsNumberListClone.RemoveAt(optionNumber);
 
-                Vector3 optionObjectPos = new Vector3(optionObject.transform.position.x, optionObject.transform.position.y, optionsZPos);
+                optionObjectPos = new Vector3(optionObject.transform.position.x, optionObject.transform.position.y, optionsZPos);
+                //correct answer spawns first
                 if (i == 0)
                 {
                     optionObject.GetComponentInChildren<Text>().text = correctAnswer.ToString();
@@ -265,10 +266,10 @@ public class GameplayController : MonoBehaviour
                 {
                     optionObject.tag = "Obstacle";
                     optionObject.GetComponentInChildren<Text>().text = wrongAnswers[i - 1].ToString();
+                    optionObject.GetComponent<BoxCollider>().isTrigger = false;
                 }
                 SpawnObstacle(optionObjectPos, optionObject);
             }
-
         }
     }
 
@@ -277,8 +278,11 @@ public class GameplayController : MonoBehaviour
         float timer = Random.Range(minCaveDelay, maxCaveDelay) / playerController.frontSpeed;
         yield return new WaitForSeconds(timer);
 
-
-        CreateElevatedPathObjects(playerController.gameObject.transform.position.z);
+        //new object will be created only when there is no question currently active
+        if (!question.gameObject.activeInHierarchy)
+        {
+            CreateElevatedPathObjects(playerController.gameObject.transform.position.z);
+        }
 
         StartCoroutine("GenerateElevatedPathObjects");
     }
@@ -311,8 +315,12 @@ public class GameplayController : MonoBehaviour
         float timer = Random.Range(minCaveDelay, maxCaveDelay) / playerController.frontSpeed;
         yield return new WaitForSeconds(timer);
 
+        //new object will be created only when there is no question currently active
+        if (!question.gameObject.activeInHierarchy)
+        {
+            CreateCaves(playerController.gameObject.transform.position.z);
+        }
 
-        CreateCaves(playerController.gameObject.transform.position.z);
 
         StartCoroutine("GenerateCaves");
     }
@@ -343,8 +351,12 @@ public class GameplayController : MonoBehaviour
         float timer = Random.Range(minLaneObstacleDelay, maxLaneObstacleDelay) / playerController.frontSpeed;
         yield return new WaitForSeconds(timer);
 
+        //new object will be created only when there is no question currently active
+        if (!question.gameObject.activeInHierarchy)
+        {
+            CreateLaneObstacles(playerController.gameObject.transform.position.z);
+        }
 
-        CreateLaneObstacles(playerController.gameObject.transform.position.z);
 
         StartCoroutine("GenerateLaneObstacles");
     }
@@ -380,7 +392,6 @@ public class GameplayController : MonoBehaviour
         float timer = Random.Range(minCollectibleDelay, maxCollectibleDelay) / playerController.frontSpeed;
         yield return new WaitForSeconds(timer);
 
-
         CreateCollectibleObjects(playerController.gameObject.transform.position.z);
 
         StartCoroutine("GenerateCollectibleObjects");
@@ -392,7 +403,7 @@ public class GameplayController : MonoBehaviour
     {
         int randomNum = Random.Range(0, 10);
 
-        int maxNum = laneObstacleSpawnChance / 10;
+        int maxNum = collectibleObjectSpawnChance / 10;
 
         if (0 <= randomNum && randomNum <= maxNum)
         {
@@ -419,8 +430,12 @@ public class GameplayController : MonoBehaviour
         float timer = Random.Range(minPathObstacleDelay, maxPathObstacleDelay) / playerController.frontSpeed;
         yield return new WaitForSeconds(timer);
 
+        //new object will be created only when there is no question currently active
+        if (!question.gameObject.activeInHierarchy)
+        {
+            CreatePathObstacles(playerController.gameObject.transform.position.z);
+        }
 
-        CreatePathObstacles(playerController.gameObject.transform.position.z);
 
         StartCoroutine("GeneratePathObstacles");
     }

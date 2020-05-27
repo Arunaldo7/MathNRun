@@ -1086,9 +1086,9 @@ MonoBehaviour:
   elevatedPathObject: {fileID: 5192610980729212349, guid: c5ef00f498a7e5540890269c7c9d3eab,
     type: 3}
   optionsList:
-  - {fileID: 438859058958082566, guid: 6e8b7961c26051a45922ad72707c4dd5, type: 3}
-  - {fileID: 2416635962972810946, guid: 5bb7c6ce22f17a844b63a47179eedac6, type: 3}
-  - {fileID: 9134595417198789940, guid: 805d83c3013a2a7428d642e4beec167b, type: 3}
+  - {fileID: 3497162505975966876, guid: 6e8b7961c26051a45922ad72707c4dd5, type: 3}
+  - {fileID: 1395995732179556011, guid: 5bb7c6ce22f17a844b63a47179eedac6, type: 3}
+  - {fileID: 1414909095248401427, guid: 805d83c3013a2a7428d642e4beec167b, type: 3}
   question: {fileID: 736044729}
   correctOptionTag: Correct Option
   caveObject: {fileID: 5737041499944510725, guid: 4a11bebdf7170654f90f042ef7ce955b,
@@ -1109,14 +1109,15 @@ MonoBehaviour:
   maxElevatedPathDelay: 25
   minCaveDelay: 100
   maxCaveDelay: 200
-  minQuestionDelay: 20
+  minQuestionDelay: 30
   maxQuestionDelay: 60
   lastCavePos: 0
   laneObstacleSpawnChance: 60
   pathObstacleSpawnChance: 20
   caveSpawnChance: 20
   elevatedPathSpawnChance: 70
-  questionSpawnChance: 100
+  collectibleObjectSpawnChance: 80
+  questionSpawnChance: 40
 --- !u!1 &589512359
 GameObject:
   m_ObjectHideFlags: 0
