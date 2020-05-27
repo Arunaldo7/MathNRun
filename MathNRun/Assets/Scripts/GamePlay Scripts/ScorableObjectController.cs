@@ -8,6 +8,8 @@ public class ScorableObjectController : MonoBehaviour
 
     private PlayerScoreController playerScoreController;
 
+    private PlayerController playerController;
+
     [SerializeField] private int count;
 
     [SerializeField] private int score;
@@ -36,7 +38,9 @@ public class ScorableObjectController : MonoBehaviour
             else if (gameObject.tag == "Correct Option")
             {
                 playerScoreController.AddScore(score);
+                playerScoreController.AddCorrectAnswerCount(count);
                 AudioSource.PlayClipAtPoint(soundToPlay, transform.position);
+                GameplayController.instance.question.SetActive(false);
                 Destroy(gameObject);
             }
 

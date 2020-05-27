@@ -15,6 +15,8 @@ public class GameplayController : MonoBehaviour
 
     [SerializeField] private GameObject[] optionsList;
 
+    [SerializeField] public GameObject question;
+
     [SerializeField] private string correctOptionTag;
 
     [SerializeField] private GameObject caveObject;
@@ -52,8 +54,11 @@ public class GameplayController : MonoBehaviour
 
     [SerializeField] private int questionSpawnChance;
 
+    private string[] operators = { "+", "-", "*", "/" };
+
     private ArrayList optionsNumberList = new ArrayList();
 
+    private bool createQuestion;
 
 
     private float speedMultiplier;
@@ -98,6 +103,7 @@ public class GameplayController : MonoBehaviour
             StartCoroutine("GenerateElevatedPathObjects");
         }
 
+        createQuestion = true;
         if (optionsList != null)
         {
             StartCoroutine("GenerateQuestion");
@@ -121,10 +127,76 @@ public class GameplayController : MonoBehaviour
         float timer = Random.Range(minQuestionDelay, maxQuestionDelay) / playerController.frontSpeed;
         yield return new WaitForSeconds(timer);
 
-
-        CreateQuestion(playerController.gameObject.transform.position.z);
+        //new question will be created only when there is no question currently active
+        if (!question.gameObject.activeInHierarchy)
+        {
+            CreateQuestion(playerController.gameObject.transform.position.z);
+        }
 
         StartCoroutine("GenerateQuestion");
+    }
+
+    private int GetCorrectAnswer(string selectedOperator, int number1, int number2)
+    {
+        switch (selectedOperator)
+        {
+            case "+":
+                Debug.Log("ans:" + (number2 + number1));
+                return number1 + number2;
+            case "-":
+                return number1 - number2;
+            case "*":
+                return number1 * number2;
+            case "/":
+                return number1 / number2;
+        }
+
+        return 0;
+    }
+
+    private int[] ChooseNumbers(string selectedOperator)
+    {
+        int[] numbers = new int[2];
+
+        //if multiply choose any one number as one digit - for easy calculation
+        if (selectedOperator == "*")
+        {
+            int choose = Random.Range(0, 2);
+            if (choose == 0)
+            {
+                numbers[0] = Random.Range(2, 100);
+                numbers[1] = Random.Range(2, 10);
+            }
+            else
+            {
+                numbers[0] = Random.Range(2, 10);
+                numbers[1] = Random.Range(2, 100);
+            }
+        }
+        else
+        {
+            numbers[0] = Random.Range(2, 100);
+            numbers[1] = Random.Range(2, 100);
+        }
+
+        if (selectedOperator == "/")
+        {
+            while ((numbers[0] % numbers[1] != 0) || (numbers[0] == numbers[1]))
+            {
+                numbers[0] = Random.Range(2, 100);
+                numbers[1] = Random.Range(2, 100);
+            }
+        }
+        else if (selectedOperator == "-")
+        {
+            while (numbers[0] == numbers[1])
+            {
+                numbers[0] = Random.Range(2, 100);
+                numbers[1] = Random.Range(2, 100);
+            }
+        }
+
+        return numbers;
     }
 
     void CreateQuestion(float playerPos)
@@ -133,11 +205,44 @@ public class GameplayController : MonoBehaviour
 
         int maxNum = questionSpawnChance / 10;
 
+
         if (0 <= randomNum && randomNum <= maxNum)
         {
-            speedMultiplier = playerController.frontSpeed / 5f;
+            float optionsZPos = playerPos + playerController.frontSpeed + groundLength;
 
-            float optionsZPos = playerPos + playerController.frontSpeed + (groundLength / 2);
+            //select random operator first and then select numbers as random
+            //if operator is /(divide) then select both numbers only if number1 is divisible by number2
+
+            string selectedOperator = operators[Random.Range(0, operators.Length)];
+
+            int[] questionNumbers = ChooseNumbers(selectedOperator);
+
+            int correctAnswer = GetCorrectAnswer(selectedOperator, questionNumbers[0], questionNumbers[1]);
+
+            int[] wrongAnswers = new int[2];
+
+            int[] wrongOptionOneNumbers = ChooseNumbers(selectedOperator);
+
+            while (wrongOptionOneNumbers[0] == questionNumbers[0] && wrongOptionOneNumbers[1] == questionNumbers[1])
+            {
+                wrongOptionOneNumbers = ChooseNumbers(selectedOperator);
+            }
+
+            wrongAnswers[0] = GetCorrectAnswer(selectedOperator, wrongOptionOneNumbers[0], wrongOptionOneNumbers[1]);
+
+            int[] wrongOptionTwoNumbers = ChooseNumbers(selectedOperator);
+
+            while ((wrongOptionTwoNumbers[0] == questionNumbers[0] && wrongOptionTwoNumbers[1] == questionNumbers[1]) &&
+                    (wrongOptionTwoNumbers[0] == wrongOptionOneNumbers[0] && wrongOptionTwoNumbers[1] == wrongOptionOneNumbers[1]))
+            {
+                wrongOptionTwoNumbers = ChooseNumbers(selectedOperator);
+            }
+
+            wrongAnswers[1] = GetCorrectAnswer(selectedOperator, wrongOptionTwoNumbers[0], wrongOptionTwoNumbers[1]);
+
+
+            question.GetComponentInChildren<Text>().text = questionNumbers[0].ToString() + selectedOperator + questionNumbers[1].ToString();
+            question.SetActive(true);
 
             ArrayList optionsNumberListClone = (ArrayList)optionsNumberList.Clone();
 
@@ -152,14 +257,14 @@ public class GameplayController : MonoBehaviour
                 Vector3 optionObjectPos = new Vector3(optionObject.transform.position.x, optionObject.transform.position.y, optionsZPos);
                 if (i == 0)
                 {
-                    optionObject.GetComponentInChildren<Text>().text = i.ToString();
+                    optionObject.GetComponentInChildren<Text>().text = correctAnswer.ToString();
                     optionObject.tag = correctOptionTag;
                     optionObject.GetComponent<BoxCollider>().isTrigger = true;
                 }
                 else
                 {
                     optionObject.tag = "Obstacle";
-                    optionObject.GetComponentInChildren<Text>().text = "nono";
+                    optionObject.GetComponentInChildren<Text>().text = wrongAnswers[i - 1].ToString();
                 }
                 SpawnObstacle(optionObjectPos, optionObject);
             }
@@ -347,17 +452,28 @@ public class GameplayController : MonoBehaviour
     public void DestroyNearObjects()
     {
         GameObject[] obstaclesList = GameObject.FindGameObjectsWithTag("Obstacle");
+        GameObject[] coinList = GameObject.FindGameObjectsWithTag("Coin Normal");
+        GameObject[] correctAnwerList = GameObject.FindGameObjectsWithTag("Correct Option");
         float playerZPos = playerController.transform.position.z;
 
-        //destroy objects in near distance of player
+        //destroy all present objects in near distance of player
         //especially done after reviving player
         for (int i = 0; i < obstaclesList.Length; i++)
         {
-            if (obstaclesList[i].transform.position.z <= (playerZPos + groundLength / 2))
-            {
-                Destroy(obstaclesList[i]);
-            }
+            Destroy(obstaclesList[i]);
         }
+
+        for (int i = 0; i < coinList.Length; i++)
+        {
+            Destroy(coinList[i]);
+        }
+
+        for (int i = 0; i < correctAnwerList.Length; i++)
+        {
+            Destroy(correctAnwerList[i]);
+        }
+
+        question.SetActive(false);
 
     }
 

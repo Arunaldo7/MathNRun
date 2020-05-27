@@ -77,7 +77,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0
+  m_Text: 2
 --- !u!1 &438859058511856702
 GameObject:
   m_ObjectHideFlags: 0
@@ -266,11 +266,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 438859058958082561}
-  - component: {fileID: 438859058958082560}
   - component: {fileID: 2465235529530819286}
+  - component: {fileID: 5783757820353725381}
   m_Layer: 0
   m_Name: Option 1
-  m_TagString: Correct Option
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -283,26 +283,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 438859058958082566}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.26, z: 3.37}
+  m_LocalPosition: {x: 0, y: -0.46, z: 3.37}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 438859058644309178}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &438859058958082560
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 438859058958082566}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.514392, y: 1.3536686, z: 1.6181016}
-  m_Center: {x: 0.0005645305, y: 0.1768338, z: 0.01638733}
 --- !u!114 &2465235529530819286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,8 +303,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   count: 1
-  score: 10000
+  score: 500
   soundToPlay: {fileID: 8300000, guid: 2051a336b1699944a9f4f578fe559f43, type: 3}
+--- !u!65 &5783757820353725381
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438859058958082566}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 10, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &438859060165596812
 GameObject:
   m_ObjectHideFlags: 0
