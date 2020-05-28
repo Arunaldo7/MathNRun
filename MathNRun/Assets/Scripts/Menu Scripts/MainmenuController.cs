@@ -8,4 +8,9 @@ public class MainmenuController : MonoBehaviour
     public void PlayGame(){
         SceneManager.LoadScene("GamePlay");
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }

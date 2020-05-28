@@ -88,9 +88,10 @@ public class AdManager : MonoBehaviour
         double amount = reward.Amount;
 
         Debug.Log("You have been awarded with " + amount.ToString() + " " + type);
-
+        
+        DestroyNearbyObjects();
         GamePanelController.instance.ResumeGame();
-        Invoke("DestroyNearbyObjects", 3.0f);
+
     }
 
     void DestroyNearbyObjects()
