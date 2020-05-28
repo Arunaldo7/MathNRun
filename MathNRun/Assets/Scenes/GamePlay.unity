@@ -1367,8 +1367,8 @@ MonoBehaviour:
   maxLaneObstacleDelay: 35
   minPathObstacleDelay: 50
   maxPathObstacleDelay: 100
-  minCollectibleDelay: 1
-  maxCollectibleDelay: 10
+  minCollectibleDelay: 5
+  maxCollectibleDelay: 30
   minElevatedPathDelay: 5
   maxElevatedPathDelay: 25
   minCaveDelay: 100
@@ -1380,7 +1380,7 @@ MonoBehaviour:
   pathObstacleSpawnChance: 20
   caveSpawnChance: 20
   elevatedPathSpawnChance: 70
-  collectibleObjectSpawnChance: 80
+  collectibleObjectSpawnChance: 75
   questionSpawnChance: 40
   playGame: 0
 --- !u!1 &589512359
