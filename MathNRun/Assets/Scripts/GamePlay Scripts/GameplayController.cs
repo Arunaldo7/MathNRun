@@ -13,6 +13,8 @@ public class GameplayController : MonoBehaviour
 
     [SerializeField] private GameObject elevatedPathObject;
 
+    [SerializeField] private string[] destroyableObjectTags;
+
     [SerializeField] private GameObject[] optionsList;
 
     [SerializeField] public GameObject question;
@@ -57,6 +59,8 @@ public class GameplayController : MonoBehaviour
 
     [SerializeField] private int questionSpawnChance;
 
+    public bool playGame;
+
     private string[] operators = { "+", "-", "*", "/" };
 
     private ArrayList optionsNumberList = new ArrayList();
@@ -71,6 +75,7 @@ public class GameplayController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playGame = true;
         //optionsNumberList add options numbers
         optionsNumberList.Add(0);
         optionsNumberList.Add(1);
@@ -79,6 +84,11 @@ public class GameplayController : MonoBehaviour
         groundLength = GameObject.Find("GroundBlock").GetComponent<GenerateEnv>().groundLength;
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
 
+        StartCoroutines();
+    }
+
+    public void StartCoroutines()
+    {
         if (caveObject != null)
         {
             StartCoroutine("GenerateCaves");
@@ -108,6 +118,11 @@ public class GameplayController : MonoBehaviour
         {
             StartCoroutine("GenerateQuestion");
         }
+    }
+
+    public void StopCoroutines()
+    {
+        StopAllCoroutines();
     }
 
     void MakeInstance()
@@ -466,29 +481,24 @@ public class GameplayController : MonoBehaviour
 
     public void DestroyNearObjects()
     {
-        GameObject[] obstaclesList = GameObject.FindGameObjectsWithTag("Obstacle");
-        GameObject[] coinList = GameObject.FindGameObjectsWithTag("Coin Normal");
-        GameObject[] correctAnwerList = GameObject.FindGameObjectsWithTag("Correct Option");
         float playerZPos = playerController.transform.position.z;
 
-        //destroy all present objects in near distance of player
-        //especially done after reviving player
-        for (int i = 0; i < obstaclesList.Length; i++)
+        for (int i = 0; i < destroyableObjectTags.Length; i++)
         {
-            Destroy(obstaclesList[i]);
-        }
+            GameObject[] destroyableObjectList = GameObject.FindGameObjectsWithTag(destroyableObjectTags[i]);
 
-        for (int i = 0; i < coinList.Length; i++)
-        {
-            Destroy(coinList[i]);
-        }
-
-        for (int i = 0; i < correctAnwerList.Length; i++)
-        {
-            Destroy(correctAnwerList[i]);
+            //destroy all present objects in near distance of player
+            //especially done after reviving player
+            for (int j = 0; j < destroyableObjectList.Length; j++)
+            {
+                Destroy(destroyableObjectList[j]);
+            }
         }
 
         question.SetActive(false);
+
+        //start all couroutines after 5 seconds
+        Invoke("StartCoroutines", 5.0f);
 
     }
 

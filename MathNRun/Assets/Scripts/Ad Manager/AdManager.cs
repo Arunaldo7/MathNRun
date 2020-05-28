@@ -63,7 +63,7 @@ public class AdManager : MonoBehaviour
         }
     }
 
-     public void RequestRewardAd()
+    public void RequestRewardAd()
     {
         AdRequest adRequest = new AdRequest.Builder().Build();
 
@@ -82,22 +82,24 @@ public class AdManager : MonoBehaviour
         }
     }
 
-    public void HandleRewardBasedVideoRewarded(object sender, Reward reward){
+    public void HandleRewardBasedVideoRewarded(object sender, Reward reward)
+    {
         string type = reward.Type;
         double amount = reward.Amount;
 
         Debug.Log("You have been awarded with " + amount.ToString() + " " + type);
 
-
-
-        GamePanelController.instance.HideGameOverPanel();
-        GameplayController.instance.DestroyNearObjects();
-
-        Time.timeScale = 1;
-
+        GamePanelController.instance.ResumeGame();
+        Invoke("DestroyNearbyObjects", 3.0f);
     }
 
-    public void HandleRewardBasedVideoClosed(object sender, EventArgs args){
+    void DestroyNearbyObjects()
+    {
+        GameplayController.instance.DestroyNearObjects();
+    }
+
+    public void HandleRewardBasedVideoClosed(object sender, EventArgs args)
+    {
         Debug.Log("Reward Video Closed");
         RequestRewardAd();
     }

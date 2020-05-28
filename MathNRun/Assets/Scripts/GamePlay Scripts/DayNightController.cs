@@ -54,46 +54,48 @@ public class DayNightController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        // moon.transform.Rotate(-(360 / fullDayLength) * Time.deltaTime, 0f, 0f);
-
-
-        timeOfDay = (timeOfDay + Time.deltaTime) % fullDayLength;
-        timePercent = timeOfDay / fullDayLength;
-        rotationX = timePercent * 360;
-        //As we have to rotate 360 degree for one complete cycle,
-        //divide it by fullDayLength to get exact day night cycle time as preferred(in seconds)
-        if (timePercent <= 0.5)
+        if (GameplayController.instance.playGame)
         {
-            sun.transform.localRotation = Quaternion.Euler(new Vector3(rotationX, 6f, 0f));
-        }
-        else
-        {
-            sun.transform.localRotation = Quaternion.Euler(new Vector3(360 - rotationX, -6f, 0f));
-        }
-
-        //for first half of day, display the day skybox
-        //for rest of the day, display night skybox
-        currentSlot = (int)Mathf.Floor(timeOfDay / timePerSlot);
+            // moon.transform.Rotate(-(360 / fullDayLength) * Time.deltaTime, 0f, 0f);
 
 
-        if (currentSlot != previousSlot)
-        {
-            previousSlot = currentSlot;
-            RenderSettings.skybox = skyBoxList[currentSlot];
-            if (((currentSlot + 1) < totalTimeSlots / 2) && !isDay)
+            timeOfDay = (timeOfDay + Time.deltaTime) % fullDayLength;
+            timePercent = timeOfDay / fullDayLength;
+            rotationX = timePercent * 360;
+            //As we have to rotate 360 degree for one complete cycle,
+            //divide it by fullDayLength to get exact day night cycle time as preferred(in seconds)
+            if (timePercent <= 0.5)
             {
-                sun.gameObject.GetComponent<Light>().color = dayColor;
-                sun.gameObject.GetComponent<Light>().intensity = dayLightIntensity;
-                isDay = true;
+                sun.transform.localRotation = Quaternion.Euler(new Vector3(rotationX, 6f, 0f));
             }
-            else if (((currentSlot + 1) >= totalTimeSlots / 2) && isDay)
+            else
             {
-                sun.gameObject.GetComponent<Light>().color = nightColor;
-                sun.gameObject.GetComponent<Light>().intensity = nightLightIntensity;
-                isDay = false;
+                sun.transform.localRotation = Quaternion.Euler(new Vector3(360 - rotationX, -6f, 0f));
             }
+
+            //for first half of day, display the day skybox
+            //for rest of the day, display night skybox
+            currentSlot = (int)Mathf.Floor(timeOfDay / timePerSlot);
+
+
+            if (currentSlot != previousSlot)
+            {
+                previousSlot = currentSlot;
+                RenderSettings.skybox = skyBoxList[currentSlot];
+                if (((currentSlot + 1) < totalTimeSlots / 2) && !isDay)
+                {
+                    sun.gameObject.GetComponent<Light>().color = dayColor;
+                    sun.gameObject.GetComponent<Light>().intensity = dayLightIntensity;
+                    isDay = true;
+                }
+                else if (((currentSlot + 1) >= totalTimeSlots / 2) && isDay)
+                {
+                    sun.gameObject.GetComponent<Light>().color = nightColor;
+                    sun.gameObject.GetComponent<Light>().intensity = nightLightIntensity;
+                    isDay = false;
+                }
+            }
+            // RenderSettings.skybox.SetFloat("_Rotation", totalTimeSlots * Time.time);
         }
-        // RenderSettings.skybox.SetFloat("_Rotation", totalTimeSlots * Time.time);
     }
 }

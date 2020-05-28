@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-
+    public static PlayerController instance;
     [SerializeField] public float acceleration;
     [SerializeField] public float frontSpeed;
 
@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 endPos;
 
-    private Rigidbody playerBody;
+    public Rigidbody playerBody;
 
     private float initPlayerYPos;
 
@@ -48,6 +48,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        MakeInstance();
         anim = GetComponent<Animator>();
         currentLane = 1;
         inPath = true;
@@ -59,43 +60,59 @@ public class PlayerController : MonoBehaviour
         movePlayerSideways = false;
         movePlayerDown = false;
 
-        // MovePlayer();
     }
 
+    void MakeInstance()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Update()
     {
-        ControlPlayer();
+        if (GameplayController.instance.playGame)
+        {
+            ControlPlayer();
+        }
     }
 
     void FixedUpdate()
     {
-        //always move player position in front based upon speed
-        if (frontSpeed <= maxFrontSpeed)
+        if (GameplayController.instance.playGame)
         {
-            frontSpeed = frontSpeed + (Time.deltaTime * acceleration);
-        }
-        Vector3 playerPos = transform.position;
-        playerPos = playerPos + (Vector3.forward * (frontSpeed * Time.deltaTime));
-        
-
-        transform.position = playerPos;
-
-        if (movePlayerSideways || movePlayerDown)
-        {
-            timeSinceStarted = Time.time - lerpStartTime;
-            percentCompleted = timeSinceStarted / lerpTime;
-            transform.position = Vector3.Lerp(startPos, endPos, percentCompleted);
-
-            //if 100% movement completed, then reset movePlayerSideways to false
-            if (percentCompleted >= 1f && movePlayerSideways)
+            //always move player position in front based upon speed
+            if (frontSpeed <= maxFrontSpeed)
             {
-                movePlayerSideways = false;
+                frontSpeed = frontSpeed + (Time.deltaTime * acceleration);
             }
+            Vector3 playerPos = transform.position;
+            playerPos = playerPos + (Vector3.forward * (frontSpeed * Time.deltaTime));
 
-            if (percentCompleted >= 1f && movePlayerDown)
+
+            transform.position = playerPos;
+
+            if (movePlayerSideways || movePlayerDown)
             {
-                movePlayerDown = false;
+                timeSinceStarted = Time.time - lerpStartTime;
+                percentCompleted = timeSinceStarted / lerpTime;
+                transform.position = Vector3.Lerp(startPos, endPos, percentCompleted);
+
+                //if 100% movement completed, then reset movePlayerSideways to false
+                if (percentCompleted >= 1f && movePlayerSideways)
+                {
+                    movePlayerSideways = false;
+                }
+
+                if (percentCompleted >= 1f && movePlayerDown)
+                {
+                    movePlayerDown = false;
+                }
             }
         }
     }
@@ -184,7 +201,11 @@ public class PlayerController : MonoBehaviour
         if (target.gameObject.tag == "Obstacle")
         {
             GamePanelController.instance.ShowGameOverPanel();
-            Time.timeScale = 0;
+            GameplayController.instance.StopCoroutines();
+            GameplayController.instance.playGame = false;
+
+            playerBody.useGravity = false;
+            playerBody.isKinematic = true;
         }
     }
 }

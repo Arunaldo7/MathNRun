@@ -32,7 +32,10 @@ public class PlayerScoreController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        AddScore(1);
+        if (GameplayController.instance.playGame)
+        {
+            AddScore(1);
+        }
     }
 
     public void AddScore(int increaseBy)

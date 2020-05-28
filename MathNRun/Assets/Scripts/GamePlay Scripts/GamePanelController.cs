@@ -10,8 +10,13 @@ public class GamePanelController : MonoBehaviour
     public static GamePanelController instance;
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject pausePanel;
+    [SerializeField] private GameObject countdownPanel;
     [SerializeField] private GameObject pauseButton;
+    [SerializeField] private Text countdownTimerText;
 
+    [SerializeField] public GameObject question;
+
+    private int countdownTimer;
 
     void Awake()
     {
@@ -31,16 +36,31 @@ public class GamePanelController : MonoBehaviour
         HidePausePanel();
     }
 
+    void Update(){
+        //when question is displayed, pause button will not show up
+        if (question.gameObject.activeInHierarchy)
+        {
+            pauseButton.SetActive(false);
+        }else{
+            pauseButton.SetActive(true);
+        }
+    }
+
     public void ShowGameOverPanel()
     {
         gameOverPanel.SetActive(true);
-        pauseButton.SetActive(false);
+        TogglePauseButton(false);
     }
 
     public void HideGameOverPanel()
     {
         gameOverPanel.SetActive(false);
-        pauseButton.SetActive(true);
+        TogglePauseButton(true);
+    }
+
+    public void TogglePauseButton(bool active)
+    {
+        pauseButton.SetActive(active);
     }
 
     public void ShowPausePanel()
@@ -48,7 +68,10 @@ public class GamePanelController : MonoBehaviour
         if (!gameOverPanel.gameObject.activeInHierarchy)
         {
             pausePanel.SetActive(true);
-            Time.timeScale = 0;
+            GameplayController.instance.playGame = false;
+            GameplayController.instance.StopCoroutines();
+            PlayerController.instance.playerBody.useGravity = false;
+            PlayerController.instance.playerBody.isKinematic = true;
         }
     }
 
@@ -60,15 +83,40 @@ public class GamePanelController : MonoBehaviour
     public void ResumeGame()
     {
         HidePausePanel();
-        Time.timeScale = 1;
+        HideGameOverPanel();
+        StartCoundownTimer();
     }
 
+    public void StartCoundownTimer()
+    {
+        countdownPanel.SetActive(true);
+        countdownTimer = 3;
+        ShowCountDown();
+    }
+
+    private void ShowCountDown()
+    {
+        countdownTimerText.text = countdownTimer.ToString();
+        if (countdownTimer > 0)
+        {
+            countdownTimer--;
+            Invoke("ShowCountDown", 1f);
+        }
+        else
+        {
+            countdownPanel.SetActive(false);
+            GameplayController.instance.playGame = true;
+            GameplayController.instance.StartCoroutines();
+            PlayerController.instance.playerBody.useGravity = true;
+            PlayerController.instance.playerBody.isKinematic = false;
+        }
+    }
 
     public void LoadMainMenu()
     {
         AdManager.instance.ShowFullScrAd();
         SceneManager.LoadScene("MainMenu");
-        Time.timeScale = 1;
+        GameplayController.instance.playGame = true;
     }
 
     public void QuitGame()

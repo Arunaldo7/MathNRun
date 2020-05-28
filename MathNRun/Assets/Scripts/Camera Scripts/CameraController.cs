@@ -31,7 +31,10 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        FollowPlayer();
+        if (GameplayController.instance.playGame)
+        {
+            FollowPlayer();
+        }
     }
 
     void FollowPlayer()

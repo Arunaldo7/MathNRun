@@ -27,7 +27,10 @@ public class ObjectCollector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        FollowPlayer();
+        if (GameplayController.instance.playGame)
+        {
+            FollowPlayer();
+        }
     }
 
     void FollowPlayer()
