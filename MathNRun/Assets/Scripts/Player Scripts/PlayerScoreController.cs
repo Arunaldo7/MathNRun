@@ -13,20 +13,15 @@ public class PlayerScoreController : MonoBehaviour
     private string scoreFormat = "00000000";
 
 
-    private int scoreCount;
-    private int coinCount;
-
-    private int correctAnswerCount;
-
     // Start is called before the first frame update
     void Start()
     {
-        scoreCount = 0;
-        coinCount = 0;
-        correctAnswerCount = 0;
-        scoreText.text = scoreCount.ToString(scoreFormat);
-        coinText.text = coinCount.ToString();
-        correctAnswerCountText.text = correctAnswerCount.ToString();
+        GameStateManager.instance.currentScore = 0;
+        GameStateManager.instance.currentCoins = 0;
+        GameStateManager.instance.currentCorrectAns = 0;
+        scoreText.text = GameStateManager.instance.currentScore.ToString(scoreFormat);
+        coinText.text = GameStateManager.instance.currentCoins.ToString();
+        correctAnswerCountText.text = GameStateManager.instance.currentCorrectAns.ToString();
     }
 
     // Update is called once per frame
@@ -40,19 +35,19 @@ public class PlayerScoreController : MonoBehaviour
 
     public void AddScore(int increaseBy)
     {
-        scoreCount = scoreCount + increaseBy;
-        scoreText.text = scoreCount.ToString(scoreFormat);
+        GameStateManager.instance.currentScore = GameStateManager.instance.currentScore + increaseBy;
+        scoreText.text = GameStateManager.instance.currentScore.ToString(scoreFormat);
     }
 
     public void AddCoinCount(int increaseBy)
     {
-        coinCount = coinCount + increaseBy;
-        coinText.text = coinCount.ToString();
+        GameStateManager.instance.currentCoins = GameStateManager.instance.currentCoins + increaseBy;
+        coinText.text = GameStateManager.instance.currentCoins.ToString();
     }
 
     public void AddCorrectAnswerCount(int increaseBy)
     {
-        correctAnswerCount = correctAnswerCount + increaseBy;
-        correctAnswerCountText.text = correctAnswerCount.ToString();
+        GameStateManager.instance.currentCorrectAns = GameStateManager.instance.currentCorrectAns + increaseBy;
+        correctAnswerCountText.text = GameStateManager.instance.currentCorrectAns.ToString();
     }
 }

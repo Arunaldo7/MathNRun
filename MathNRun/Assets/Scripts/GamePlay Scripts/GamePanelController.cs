@@ -114,6 +114,7 @@ public class GamePanelController : MonoBehaviour
 
     public void LoadMainMenu()
     {
+        GameStateManager.instance.SaveData();
         AdManager.instance.ShowFullScrAd();
         SceneManager.LoadScene("MainMenu");
         GameplayController.instance.playGame = true;
@@ -121,6 +122,7 @@ public class GamePanelController : MonoBehaviour
 
     public void QuitGame()
     {
+        GameStateManager.instance.SaveData();
         Application.Quit();
     }
 }
