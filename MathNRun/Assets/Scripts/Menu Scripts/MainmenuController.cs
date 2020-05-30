@@ -13,6 +13,7 @@ public class MainmenuController : MonoBehaviour
     [SerializeField] public Text correctAnswerCountText;
     private string scoreFormat = "00000000";
 
+    [SerializeField] private Animator settingsAnim;
 
     // Start is called before the first frame update
     void Start()
@@ -34,7 +35,7 @@ public class MainmenuController : MonoBehaviour
         coinText.text = GameStateManager.instance.totalCoins.ToString();
         correctAnswerCountText.text = GameStateManager.instance.totalCorrectAns.ToString();
     }
-
+    
     public void PlayGame()
     {
         SceneManager.LoadScene("GamePlay");
@@ -45,4 +46,9 @@ public class MainmenuController : MonoBehaviour
         GameStateManager.instance.SaveData();
         Application.Quit();
     }
+
+    public void ShowHideSettings(){
+        settingsAnim.SetBool("SlideUp", !settingsAnim.GetBool("SlideUp"));
+    }
+
 }

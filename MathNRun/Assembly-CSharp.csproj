@@ -689,6 +689,9 @@
     <Reference Include="UnityEditor.UI">
         <HintPath>F:/UnityGames/MathNRun/MathNRun/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.2D.Sprite.Editor">
+        <HintPath>F:/UnityGames/MathNRun/MathNRun/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="GoogleMobileAds.csproj">
