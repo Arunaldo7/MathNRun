@@ -13,6 +13,8 @@ public class GameplayController : MonoBehaviour
 
     [SerializeField] private GameObject elevatedPathObject;
 
+    [SerializeField] private GameObject potionObject;
+
     [SerializeField] private string[] destroyableObjectTags;
 
     [SerializeField] private GameObject[] optionsList;
@@ -34,6 +36,9 @@ public class GameplayController : MonoBehaviour
     [SerializeField] private float minCollectibleDelay;
     [SerializeField] private float maxCollectibleDelay;
 
+    [SerializeField] private float minPotionDelay;
+    [SerializeField] private float maxPotionDelay;
+
     [SerializeField] private float minElevatedPathDelay;
     [SerializeField] private float maxElevatedPathDelay;
 
@@ -53,6 +58,8 @@ public class GameplayController : MonoBehaviour
 
     [SerializeField] private int caveSpawnChance;
     [SerializeField] private int elevatedPathSpawnChance;
+
+    [SerializeField] private int potionSpawnChance;
 
     [SerializeField] private int collectibleObjectSpawnChance;
 
@@ -114,9 +121,14 @@ public class GameplayController : MonoBehaviour
             StartCoroutine("GenerateElevatedPathObjects");
         }
 
-        if (optionsList != null)
+        if (optionsList.Length > 0)
         {
             StartCoroutine("GenerateQuestion");
+        }
+
+        if (potionObject != null)
+        {
+            StartCoroutine("GeneratePotionObject");
         }
     }
 
@@ -285,6 +297,41 @@ public class GameplayController : MonoBehaviour
                 }
                 SpawnObstacle(optionObjectPos, optionObject);
             }
+        }
+    }
+
+      IEnumerator GeneratePotionObject()
+    {
+        float timer = Random.Range(minPotionDelay, maxPotionDelay) / playerController.frontSpeed;
+        yield return new WaitForSeconds(timer);
+
+        //new object will be created only when there is no question currently active
+        if (!question.gameObject.activeInHierarchy)
+        {
+            CreatePotionObject(playerController.gameObject.transform.position.z);
+        }
+
+        StartCoroutine("GeneratePotionObject");
+    }
+
+    void CreatePotionObject(float playerPos)
+    {
+        int randomNum = Random.Range(0, 10);
+
+        int maxNum = potionSpawnChance / 10;
+
+        if (0 <= randomNum && randomNum <= maxNum)
+        {
+            speedMultiplier = playerController.frontSpeed / 5f;
+
+            int obstacleLane = Random.Range(0, lanes.Length);
+
+            float potionObjectZPos = playerPos + playerController.frontSpeed + (groundLength / 2);
+
+            Vector3 potionObjectPos = new Vector3(lanes[obstacleLane].transform.position.x, potionObject.transform.position.y, potionObjectZPos);
+
+            SpawnObstacle(potionObjectPos, potionObject);
+
         }
     }
 

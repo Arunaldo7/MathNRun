@@ -11,6 +11,7 @@ TagManager:
   - Lane
   - Path
   - Correct Option
+  - Potion
   layers:
   - Default
   - TransparentFX

@@ -14,6 +14,8 @@ public class GamePanelController : MonoBehaviour
     [SerializeField] private GameObject pauseButton;
     [SerializeField] private Text countdownTimerText;
 
+    [SerializeField] public Text potionCountText;
+
     [SerializeField] public GameObject question;
 
     private int countdownTimer;
@@ -110,6 +112,13 @@ public class GamePanelController : MonoBehaviour
             PlayerController.instance.playerBody.useGravity = true;
             PlayerController.instance.playerBody.isKinematic = false;
         }
+    }
+
+    public void UsePotion(){
+        GameStateManager.instance.potionCount = GameStateManager.instance.potionCount - 1;
+        potionCountText.text = GameStateManager.instance.potionCount.ToString();
+        GameplayController.instance.DestroyNearObjects();
+        ResumeGame();
     }
 
     public void LoadMainMenu()

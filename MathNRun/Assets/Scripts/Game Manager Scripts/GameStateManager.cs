@@ -30,6 +30,10 @@ public class GameStateManager : MonoBehaviour
 
     public int highCorrectAns;
 
+    public int potionCount;
+
+    public int easyQuestionsCount;
+
     void Awake()
     {
         DontDestroyOnLoad(this);
@@ -49,7 +53,7 @@ public class GameStateManager : MonoBehaviour
     {
         LoadData();
 
-        
+
 
         if (gameData != null)
         {
@@ -80,6 +84,10 @@ public class GameStateManager : MonoBehaviour
 
             highCorrectAns = 0;
 
+            potionCount = 0;
+
+            easyQuestionsCount = 0;
+
             gameData = new GameData();
 
             SaveData();
@@ -97,6 +105,10 @@ public class GameStateManager : MonoBehaviour
             totalCorrectAns = gameData.GetTotalCorrectAns();
 
             highCorrectAns = gameData.GetHighCorrectAns();
+
+            potionCount = gameData.GetPotionCount();
+
+            easyQuestionsCount = gameData.GetEasyQuestionsCount();
 
             currentScore = 0;
             currentCorrectAns = 0;
@@ -119,12 +131,15 @@ public class GameStateManager : MonoBehaviour
                 gameData.SetIsMusicOn(isMusicOn);
                 gameData.SetSelectedPlayer(selectedPlayer);
                 gameData.SetTotalCoins(totalCoins + currentCoins);
+                gameData.SetTotalCorrectAns(totalCorrectAns + currentCorrectAns);
+
+                gameData.SetPotionCount(potionCount);
+                gameData.SetEasyQuestionsCount(easyQuestionsCount);
+
                 if (currentScore > highScore)
                 {
                     gameData.SetHighScore(currentScore);
                 }
-                gameData.SetTotalCorrectAns(totalCorrectAns + currentCorrectAns);
-
                 if (currentCorrectAns > highCorrectAns)
                 {
                     gameData.SetHighCorrectAns(highCorrectAns);
@@ -192,6 +207,10 @@ class GameData
     private int totalCorrectAns;
 
     private int highCorrectAns;
+
+    private int potionCount;
+
+    private int easyQuestionsCount;
 
     public void SetIsGameStartedFirstTime(bool isGameStartedFirstTime)
     {
@@ -261,5 +280,25 @@ class GameData
     public int GetHighCorrectAns()
     {
         return this.highCorrectAns;
+    }
+
+    public void SetPotionCount(int potionCount)
+    {
+        this.potionCount = potionCount;
+    }
+
+    public int GetPotionCount()
+    {
+        return this.potionCount;
+    }
+
+    public void SetEasyQuestionsCount(int easyQuestionsCount)
+    {
+        this.easyQuestionsCount = easyQuestionsCount;
+    }
+
+    public int GetEasyQuestionsCount()
+    {
+        return this.easyQuestionsCount;
     }
 }

@@ -11,6 +11,8 @@ public class MainmenuController : MonoBehaviour
     [SerializeField] public Text coinText;
 
     [SerializeField] public Text correctAnswerCountText;
+
+    [SerializeField] public Text potionCountText;
     private string scoreFormat = "00000000";
 
     [SerializeField] private Animator settingsAnim;
@@ -34,6 +36,7 @@ public class MainmenuController : MonoBehaviour
         scoreText.text = GameStateManager.instance.highScore.ToString(scoreFormat);
         coinText.text = GameStateManager.instance.totalCoins.ToString();
         correctAnswerCountText.text = GameStateManager.instance.totalCorrectAns.ToString();
+        potionCountText.text = GameStateManager.instance.potionCount.ToString();
     }
     
     public void PlayGame()

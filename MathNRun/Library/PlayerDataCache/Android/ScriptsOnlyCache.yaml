@@ -39,6 +39,7 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.CanvasScaler
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.Image
+    - UnityEngine.UI.Mask
     - UnityEngine.UI.Outline
     - UnityEngine.UI.Shadow
     - UnityEngine.UI.Text
@@ -91,47 +92,47 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11306}
     - Class: 114
-      Script: {instanceID: 11362}
+      Script: {instanceID: 11366}
     - Class: 114
-      Script: {instanceID: 11378}
+      Script: {instanceID: 11382}
     - Class: 114
-      Script: {instanceID: 11510}
+      Script: {instanceID: 11518}
     - Class: 114
-      Script: {instanceID: 11558}
+      Script: {instanceID: 11566}
     - Class: 114
-      Script: {instanceID: 11564}
+      Script: {instanceID: 11572}
     - Class: 114
-      Script: {instanceID: 11862}
+      Script: {instanceID: 11876}
     - Class: 114
-      Script: {instanceID: 11898}
+      Script: {instanceID: 11912}
     - Class: 114
-      Script: {instanceID: 12038}
+      Script: {instanceID: 12058}
     - Class: 114
-      Script: {instanceID: 12326}
+      Script: {instanceID: 12352}
     - Class: 114
-      Script: {instanceID: 12384}
+      Script: {instanceID: 12412}
     - Class: 114
-      Script: {instanceID: 12390}
+      Script: {instanceID: 12418}
     - Class: 114
-      Script: {instanceID: 12392}
+      Script: {instanceID: 12420}
     - Class: 114
-      Script: {instanceID: 12552}
+      Script: {instanceID: 12584}
     - Class: 114
-      Script: {instanceID: 12744}
+      Script: {instanceID: 12778}
     - Class: 114
-      Script: {instanceID: 12886}
+      Script: {instanceID: 12926}
     - Class: 114
-      Script: {instanceID: 13140}
+      Script: {instanceID: 13190}
     - Class: 114
-      Script: {instanceID: 13234}
+      Script: {instanceID: 13284}
     - Class: 114
-      Script: {instanceID: 13442}
+      Script: {instanceID: 13502}
     - Class: 114
-      Script: {instanceID: 13468}
+      Script: {instanceID: 13528}
     - Class: 114
-      Script: {instanceID: 13566}
+      Script: {instanceID: 13626}
     - Class: 114
-      Script: {instanceID: 13586}
+      Script: {instanceID: 13646}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -202,31 +203,33 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11306}
     - Class: 114
-      Script: {instanceID: 11362}
+      Script: {instanceID: 11366}
     - Class: 114
-      Script: {instanceID: 11378}
+      Script: {instanceID: 11382}
     - Class: 114
-      Script: {instanceID: 11510}
+      Script: {instanceID: 11518}
     - Class: 114
-      Script: {instanceID: 11558}
+      Script: {instanceID: 11566}
     - Class: 114
-      Script: {instanceID: 11948}
+      Script: {instanceID: 11936}
     - Class: 114
-      Script: {instanceID: 12038}
+      Script: {instanceID: 11964}
     - Class: 114
-      Script: {instanceID: 12384}
+      Script: {instanceID: 12058}
     - Class: 114
-      Script: {instanceID: 12506}
+      Script: {instanceID: 12412}
     - Class: 114
-      Script: {instanceID: 12552}
+      Script: {instanceID: 12538}
     - Class: 114
-      Script: {instanceID: 12660}
+      Script: {instanceID: 12584}
     - Class: 114
-      Script: {instanceID: 13140}
+      Script: {instanceID: 12694}
     - Class: 114
-      Script: {instanceID: 13478}
+      Script: {instanceID: 13190}
     - Class: 114
-      Script: {instanceID: 13566}
+      Script: {instanceID: 13538}
+    - Class: 114
+      Script: {instanceID: 13626}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -280,7 +283,7 @@ ScriptsOnlyBuild:
     className: TMP_Dropdown
   - hash:
       serializedVersion: 2
-      Hash: 7313db3c8781ca849b6b12c62cc35699
+      Hash: fb31735d8c5f46d6e756360d70941dba
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GameStateManager
@@ -526,7 +529,7 @@ ScriptsOnlyBuild:
     className: LightPreset
   - hash:
       serializedVersion: 2
-      Hash: ad4ff05ef13851edd3b9f3c8d3a633e3
+      Hash: 927a5d58307e9f713dd6326e47f7dba5
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerScoreController
@@ -574,7 +577,7 @@ ScriptsOnlyBuild:
     className: JoystickController
   - hash:
       serializedVersion: 2
-      Hash: ad4ff05ef13851edd3b9f3c8d3a633e3
+      Hash: 0c7687a4f161eafc108cca1de577e6c8
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MainmenuController
@@ -640,7 +643,7 @@ ScriptsOnlyBuild:
     className: Physics2DRaycaster
   - hash:
       serializedVersion: 2
-      Hash: 178a690421000ed592b6c0521d641b3a
+      Hash: 552525d2e4279466e11298785fd0abc8
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GameplayController
@@ -718,7 +721,7 @@ ScriptsOnlyBuild:
     className: TMP_ColorGradient
   - hash:
       serializedVersion: 2
-      Hash: 85595e9f38c8d5c8d436632781167516
+      Hash: b135d1177428883995d1cde830ed4577
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GamePanelController

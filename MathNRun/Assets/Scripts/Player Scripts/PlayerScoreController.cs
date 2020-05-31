@@ -10,6 +10,8 @@ public class PlayerScoreController : MonoBehaviour
     [SerializeField] public Text coinText;
 
     [SerializeField] public Text correctAnswerCountText;
+
+    [SerializeField] public Text potionCountText;
     private string scoreFormat = "00000000";
 
 
@@ -22,6 +24,7 @@ public class PlayerScoreController : MonoBehaviour
         scoreText.text = GameStateManager.instance.currentScore.ToString(scoreFormat);
         coinText.text = GameStateManager.instance.currentCoins.ToString();
         correctAnswerCountText.text = GameStateManager.instance.currentCorrectAns.ToString();
+        potionCountText.text = GameStateManager.instance.potionCount.ToString();
     }
 
     // Update is called once per frame
@@ -49,5 +52,10 @@ public class PlayerScoreController : MonoBehaviour
     {
         GameStateManager.instance.currentCorrectAns = GameStateManager.instance.currentCorrectAns + increaseBy;
         correctAnswerCountText.text = GameStateManager.instance.currentCorrectAns.ToString();
+    }
+    public void AddPotionCount(int increaseBy)
+    {
+        GameStateManager.instance.potionCount = GameStateManager.instance.potionCount + increaseBy;
+        potionCountText.text = GameStateManager.instance.potionCount.ToString();
     }
 }
