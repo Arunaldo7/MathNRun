@@ -122,7 +122,6 @@
      <Compile Include="Assets\Scripts\Player Scripts\PlayerScoreController.cs" />
      <Compile Include="Assets\Scripts\Player Scripts\SwipeDetector.cs" />
      <None Include="Assets\GooglePlayGames\Plugins\Android\GooglePlayGamesManifest.plugin\AndroidManifest.xml" />
-     <None Include="Assets\Shaders\Water Shader.shader" />
      <None Include="Assets\Day-Night Skyboxes\Textures\Readme for Assigning.txt" />
      <None Include="Assets\Day-Night Skyboxes\readme.txt" />
      <None Include="Assets\Fonts\readme.txt" />
