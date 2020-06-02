@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class MainmenuController : MonoBehaviour
 {
+    public static MainmenuController instance;
 
     [SerializeField] public Text scoreText;
     [SerializeField] public Text coinText;
@@ -17,6 +18,17 @@ public class MainmenuController : MonoBehaviour
 
     [SerializeField] private Animator settingsAnim;
 
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -30,9 +42,10 @@ public class MainmenuController : MonoBehaviour
         {
             GameStateManager.instance.highCorrectAns = GameStateManager.instance.currentCorrectAns;
         }
+        DisplayGameState();
+    }
 
-
-
+    public void DisplayGameState(){
         scoreText.text = GameStateManager.instance.highScore.ToString(scoreFormat);
         coinText.text = GameStateManager.instance.totalCoins.ToString();
         correctAnswerCountText.text = GameStateManager.instance.totalCorrectAns.ToString();
