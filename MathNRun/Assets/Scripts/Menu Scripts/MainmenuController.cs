@@ -16,6 +16,14 @@ public class MainmenuController : MonoBehaviour
     [SerializeField] public Text potionCountText;
     private string scoreFormat = "00000000";
 
+    [SerializeField] public GameObject mainMenuPanel;
+    [SerializeField] public GameObject gameStatePanel;
+    [SerializeField] public GameObject lifePotionShopPanel;
+
+    [SerializeField] public GameObject easyPotionShopPanel;
+
+    [SerializeField] public GameObject gemShopPanel;
+
     [SerializeField] private Animator settingsAnim;
 
     void Awake()
@@ -65,6 +73,37 @@ public class MainmenuController : MonoBehaviour
 
     public void ShowHideSettings(){
         settingsAnim.SetBool("SlideUp", !settingsAnim.GetBool("SlideUp"));
+    }
+
+    public void ShowLifePotionShopPanel(){
+        Debug.Log("show panel");
+        lifePotionShopPanel.SetActive(true);
+        mainMenuPanel.SetActive(false);
+    }
+
+    public void HideLifePotionShopPanel(){
+        lifePotionShopPanel.SetActive(false);
+        mainMenuPanel.SetActive(true);
+    }
+
+    public void ShowEasyPotionShopPanel(){
+        easyPotionShopPanel.SetActive(true);
+        mainMenuPanel.SetActive(false);
+    }
+
+    public void HideEasyPotionShopPanel(){
+        easyPotionShopPanel.SetActive(false);
+        mainMenuPanel.SetActive(true);
+    }
+
+    public void ShowGemPotionShopPanel(){
+        gemShopPanel.SetActive(true);
+        mainMenuPanel.SetActive(false);
+    }
+
+    public void HideGemPotionShopPanel(){
+        gemShopPanel.SetActive(false);
+        mainMenuPanel.SetActive(true);
     }
 
 }
