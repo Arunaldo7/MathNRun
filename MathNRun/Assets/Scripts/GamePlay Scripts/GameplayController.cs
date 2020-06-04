@@ -13,7 +13,7 @@ public class GameplayController : MonoBehaviour
 
     [SerializeField] private GameObject elevatedPathObject;
 
-    [SerializeField] private GameObject potionObject;
+    [SerializeField] private GameObject[] potionObjects;
 
     [SerializeField] private string[] destroyableObjectTags;
 
@@ -126,7 +126,7 @@ public class GameplayController : MonoBehaviour
             StartCoroutine("GenerateQuestion");
         }
 
-        if (potionObject != null)
+        if (potionObjects.Length > 0)
         {
             StartCoroutine("GeneratePotionObject");
         }
@@ -325,12 +325,13 @@ public class GameplayController : MonoBehaviour
             speedMultiplier = playerController.frontSpeed / 5f;
 
             int obstacleLane = Random.Range(0, lanes.Length);
+            int potionType = Random.Range(0, laneObstacleObjects.Length);
 
             float potionObjectZPos = playerPos + playerController.frontSpeed + (groundLength / 2);
 
-            Vector3 potionObjectPos = new Vector3(lanes[obstacleLane].transform.position.x, potionObject.transform.position.y, potionObjectZPos);
+            Vector3 potionObjectPos = new Vector3(lanes[obstacleLane].transform.position.x, potionObjects[potionType].transform.position.y, potionObjectZPos);
 
-            SpawnObstacle(potionObjectPos, potionObject);
+            SpawnObstacle(potionObjectPos, potionObjects[potionType]);
 
         }
     }

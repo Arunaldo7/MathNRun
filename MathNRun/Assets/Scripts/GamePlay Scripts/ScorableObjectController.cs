@@ -35,10 +35,17 @@ public class ScorableObjectController : MonoBehaviour
                 AudioSource.PlayClipAtPoint(soundToPlay, transform.position);
                 Destroy(gameObject);
             }
-            else if (gameObject.tag == "Potion")
+            else if (gameObject.tag == "Life Potion")
             {
                 playerScoreController.AddScore(score);
-                playerScoreController.AddPotionCount(count);
+                playerScoreController.AddLifePotionCount(count);
+                AudioSource.PlayClipAtPoint(soundToPlay, transform.position);
+                Destroy(gameObject);
+            }
+            else if (gameObject.tag == "Magic Potion")
+            {
+                playerScoreController.AddScore(score);
+                playerScoreController.AddMagicPotionCount(count);
                 AudioSource.PlayClipAtPoint(soundToPlay, transform.position);
                 Destroy(gameObject);
             }

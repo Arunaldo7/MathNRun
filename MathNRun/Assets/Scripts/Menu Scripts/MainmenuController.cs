@@ -14,6 +14,7 @@ public class MainmenuController : MonoBehaviour
     [SerializeField] public Text correctAnswerCountText;
 
     [SerializeField] public Text potionCountText;
+    [SerializeField] public Text magicPotionCountText;
     private string scoreFormat = "00000000";
 
     [SerializeField] public GameObject mainMenuPanel;
@@ -53,13 +54,15 @@ public class MainmenuController : MonoBehaviour
         DisplayGameState();
     }
 
-    public void DisplayGameState(){
+    public void DisplayGameState()
+    {
         scoreText.text = GameStateManager.instance.highScore.ToString(scoreFormat);
         coinText.text = GameStateManager.instance.totalCoins.ToString();
         correctAnswerCountText.text = GameStateManager.instance.totalCorrectAns.ToString();
         potionCountText.text = GameStateManager.instance.potionCount.ToString();
+        magicPotionCountText.text = GameStateManager.instance.magicPotionCount.ToString();
     }
-    
+
     public void PlayGame()
     {
         SceneManager.LoadScene("GamePlay");
@@ -71,37 +74,44 @@ public class MainmenuController : MonoBehaviour
         Application.Quit();
     }
 
-    public void ShowHideSettings(){
+    public void ShowHideSettings()
+    {
         settingsAnim.SetBool("SlideUp", !settingsAnim.GetBool("SlideUp"));
     }
 
-    public void ShowLifePotionShopPanel(){
+    public void ShowLifePotionShopPanel()
+    {
         Debug.Log("show panel");
         lifePotionShopPanel.SetActive(true);
         mainMenuPanel.SetActive(false);
     }
 
-    public void HideLifePotionShopPanel(){
+    public void HideLifePotionShopPanel()
+    {
         lifePotionShopPanel.SetActive(false);
         mainMenuPanel.SetActive(true);
     }
 
-    public void ShowEasyPotionShopPanel(){
+    public void ShowEasyPotionShopPanel()
+    {
         easyPotionShopPanel.SetActive(true);
         mainMenuPanel.SetActive(false);
     }
 
-    public void HideEasyPotionShopPanel(){
+    public void HideEasyPotionShopPanel()
+    {
         easyPotionShopPanel.SetActive(false);
         mainMenuPanel.SetActive(true);
     }
 
-    public void ShowGemPotionShopPanel(){
+    public void ShowGemPotionShopPanel()
+    {
         gemShopPanel.SetActive(true);
         mainMenuPanel.SetActive(false);
     }
 
-    public void HideGemPotionShopPanel(){
+    public void HideGemPotionShopPanel()
+    {
         gemShopPanel.SetActive(false);
         mainMenuPanel.SetActive(true);
     }

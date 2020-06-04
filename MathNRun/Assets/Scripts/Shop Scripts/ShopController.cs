@@ -30,14 +30,18 @@ public class ShopController : MonoBehaviour
 
 
 
-    private void PurchasePotion(int itemNumber){
+    private void PurchasePotion(int itemNumber, string potionType){
         int itemPrice =  int.Parse(potionItemList[itemNumber].itemPrice.text);
         string itemQuantityText = potionItemList[itemNumber].itemQuantity.text;
         itemQuantityText = itemQuantityText.Replace("x", "").Trim();
         int itemQuantity =  int.Parse(itemQuantityText);
 
         GameStateManager.instance.totalCoins = GameStateManager.instance.totalCoins - itemPrice;
+        if(potionType == "Life Potion"){
         GameStateManager.instance.potionCount = GameStateManager.instance.potionCount + itemQuantity;
+        }else{
+            GameStateManager.instance.magicPotionCount = GameStateManager.instance.magicPotionCount + itemQuantity;
+        }
 
         GameStateManager.instance.SaveData();
         MainmenuController.instance.DisplayGameState();
@@ -45,17 +49,32 @@ public class ShopController : MonoBehaviour
 
     public void PurchasePotionItemOne()
     {
-        PurchasePotion(0);
+        PurchasePotion(0, "Life Potion");
     }
 
     public void PurchasePotionItemTwo()
     {
-        PurchasePotion(1);
+        PurchasePotion(1, "Life Potion");
     }
 
     public void PurchasePotionItemThree()
     {
-        PurchasePotion(2);
+        PurchasePotion(2, "Life Potion");
+    }
+
+    public void PurchaseMagicPotionItemOne()
+    {
+        PurchasePotion(0, "Magic Potion");
+    }
+
+    public void PurchaseMagicPotionItemTwo()
+    {
+        PurchasePotion(1, "Magic Potion");
+    }
+
+    public void PurchaseMagicPotionItemThree()
+    {
+        PurchasePotion(2, "Magic Potion");
     }
 }
 

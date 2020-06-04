@@ -12,6 +12,8 @@ TagManager:
   - Path
   - Correct Option
   - Potion
+  - Magic Potion
+  - Life Potion
   layers:
   - Default
   - TransparentFX

@@ -32,7 +32,7 @@ public class GameStateManager : MonoBehaviour
 
     public int potionCount;
 
-    public int easyQuestionsCount;
+    public int magicPotionCount;
 
     void Awake()
     {
@@ -86,7 +86,7 @@ public class GameStateManager : MonoBehaviour
 
             potionCount = 0;
 
-            easyQuestionsCount = 0;
+            magicPotionCount = 0;
 
             gameData = new GameData();
 
@@ -108,7 +108,7 @@ public class GameStateManager : MonoBehaviour
 
             potionCount = gameData.GetPotionCount();
 
-            easyQuestionsCount = gameData.GetEasyQuestionsCount();
+            magicPotionCount = gameData.GetMagicPotionCount();
 
             currentScore = 0;
             currentCorrectAns = 0;
@@ -134,7 +134,7 @@ public class GameStateManager : MonoBehaviour
                 gameData.SetTotalCorrectAns(totalCorrectAns + currentCorrectAns);
 
                 gameData.SetPotionCount(potionCount);
-                gameData.SetEasyQuestionsCount(easyQuestionsCount);
+                gameData.SetMagicPotionCount(magicPotionCount);
 
                 if (currentScore > highScore)
                 {
@@ -210,7 +210,7 @@ class GameData
 
     private int potionCount;
 
-    private int easyQuestionsCount;
+    private int magicPotionCount;
 
     public void SetIsGameStartedFirstTime(bool isGameStartedFirstTime)
     {
@@ -292,13 +292,13 @@ class GameData
         return this.potionCount;
     }
 
-    public void SetEasyQuestionsCount(int easyQuestionsCount)
+    public void SetMagicPotionCount(int magicPotionCount)
     {
-        this.easyQuestionsCount = easyQuestionsCount;
+        this.magicPotionCount = magicPotionCount;
     }
 
-    public int GetEasyQuestionsCount()
+    public int GetMagicPotionCount()
     {
-        return this.easyQuestionsCount;
+        return this.magicPotionCount;
     }
 }

@@ -12,6 +12,8 @@ public class PlayerScoreController : MonoBehaviour
     [SerializeField] public Text correctAnswerCountText;
 
     [SerializeField] public Text potionCountText;
+
+    [SerializeField] public Text magicPotionCountText;
     private string scoreFormat = "00000000";
 
 
@@ -53,9 +55,15 @@ public class PlayerScoreController : MonoBehaviour
         GameStateManager.instance.currentCorrectAns = GameStateManager.instance.currentCorrectAns + increaseBy;
         correctAnswerCountText.text = GameStateManager.instance.currentCorrectAns.ToString();
     }
-    public void AddPotionCount(int increaseBy)
+    public void AddLifePotionCount(int increaseBy)
     {
         GameStateManager.instance.potionCount = GameStateManager.instance.potionCount + increaseBy;
         potionCountText.text = GameStateManager.instance.potionCount.ToString();
+    }
+
+     public void AddMagicPotionCount(int increaseBy)
+    {
+        GameStateManager.instance.magicPotionCount = GameStateManager.instance.magicPotionCount + increaseBy;
+        magicPotionCountText.text = GameStateManager.instance.magicPotionCount.ToString();
     }
 }
