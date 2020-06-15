@@ -19,6 +19,7 @@ public class MainmenuController : MonoBehaviour
 
     [SerializeField] public GameObject mainMenuPanel;
     [SerializeField] public GameObject gameStatePanel;
+    
     [SerializeField] public GameObject lifePotionShopPanel;
 
     [SerializeField] public GameObject easyPotionShopPanel;
@@ -81,39 +82,34 @@ public class MainmenuController : MonoBehaviour
 
     public void ShowLifePotionShopPanel()
     {
-        Debug.Log("show panel");
+        easyPotionShopPanel.SetActive(false);
         lifePotionShopPanel.SetActive(true);
+        gemShopPanel.SetActive(false);
         mainMenuPanel.SetActive(false);
     }
 
-    public void HideLifePotionShopPanel()
-    {
-        lifePotionShopPanel.SetActive(false);
-        mainMenuPanel.SetActive(true);
-    }
 
     public void ShowEasyPotionShopPanel()
     {
         easyPotionShopPanel.SetActive(true);
+        lifePotionShopPanel.SetActive(false);
+        gemShopPanel.SetActive(false);
         mainMenuPanel.SetActive(false);
-    }
-
-    public void HideEasyPotionShopPanel()
-    {
-        easyPotionShopPanel.SetActive(false);
-        mainMenuPanel.SetActive(true);
     }
 
     public void ShowGemPotionShopPanel()
     {
+        easyPotionShopPanel.SetActive(false);
+        lifePotionShopPanel.SetActive(false);
         gemShopPanel.SetActive(true);
         mainMenuPanel.SetActive(false);
     }
 
-    public void HideGemPotionShopPanel()
+     public void HideShopPanel()
     {
+        easyPotionShopPanel.SetActive(false);
+        lifePotionShopPanel.SetActive(false);
         gemShopPanel.SetActive(false);
         mainMenuPanel.SetActive(true);
     }
-
 }

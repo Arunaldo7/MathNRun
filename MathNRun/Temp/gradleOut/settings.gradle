@@ -1,3 +1,0 @@
-include ':launcher', ':unityLibrary'
-include 'unityLibrary:GoogleMobileAdsPlugin'
-include 'unityLibrary:GooglePlayGamesManifest.plugin'
