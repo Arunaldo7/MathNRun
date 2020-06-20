@@ -66,6 +66,10 @@ public class GameplayController : MonoBehaviour
 
     [SerializeField] private int questionSpawnChance;
 
+    [SerializeField] public int noOfEasyQns;
+
+    private bool setEasyQn;
+
     public bool playGame;
 
     private string[] operators = { "+", "-", "*", "/" };
@@ -87,6 +91,8 @@ public class GameplayController : MonoBehaviour
         optionsNumberList.Add(0);
         optionsNumberList.Add(1);
         optionsNumberList.Add(2);
+
+        setEasyQn = true;
 
         groundLength = GameObject.Find("GroundBlock").GetComponent<GenerateEnv>().groundLength;
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
@@ -183,43 +189,90 @@ public class GameplayController : MonoBehaviour
     private int[] ChooseNumbers(string selectedOperator)
     {
         int[] numbers = new int[2];
+        int upperRange;
 
         //if multiply choose any one number as one digit - for easy calculation
         if (selectedOperator == "*")
         {
             int choose = Random.Range(0, 2);
+            //if easy qn is set then reduce range
+            if (setEasyQn)
+            {
+                upperRange = 10;
+            }
+            else
+            {
+                upperRange = 100;
+            }
+
             if (choose == 0)
             {
-                numbers[0] = Random.Range(2, 100);
+                numbers[0] = Random.Range(2, upperRange);
                 numbers[1] = Random.Range(2, 10);
             }
             else
             {
                 numbers[0] = Random.Range(2, 10);
-                numbers[1] = Random.Range(2, 100);
+                numbers[1] = Random.Range(2, upperRange);
             }
         }
-        else
-        {
-            numbers[0] = Random.Range(2, 100);
-            numbers[1] = Random.Range(2, 100);
-        }
 
-        if (selectedOperator == "/")
+        else if (selectedOperator == "/")
         {
+            //if easy qn is set then reduce range
+            if (setEasyQn)
+            {
+                upperRange = 40;
+            }
+            else
+            {
+                upperRange = 100;
+            }
+
+            numbers[0] = Random.Range(2, upperRange);
+            numbers[1] = Random.Range(2, upperRange);
+
+
             while ((numbers[0] % numbers[1] != 0) || (numbers[0] == numbers[1]))
             {
-                numbers[0] = Random.Range(2, 100);
-                numbers[1] = Random.Range(2, 100);
+                numbers[0] = Random.Range(2, upperRange);
+                numbers[1] = Random.Range(2, upperRange);
             }
         }
         else if (selectedOperator == "-")
         {
+            //if easy qn is set then reduce range
+            if (setEasyQn)
+            {
+                upperRange = 20;
+            }
+            else
+            {
+                upperRange = 100;
+            }
+            numbers[0] = Random.Range(2, upperRange);
+            numbers[1] = Random.Range(2, upperRange);
+
             while (numbers[0] == numbers[1])
             {
-                numbers[0] = Random.Range(2, 100);
-                numbers[1] = Random.Range(2, 100);
+                numbers[0] = Random.Range(2, upperRange);
+                numbers[1] = Random.Range(2, upperRange);
             }
+        }
+        else
+        {
+            //if easy qn is set then reduce range
+            if (setEasyQn)
+            {
+                upperRange = 20;
+            }
+            else
+            {
+                upperRange = 100;
+            }
+
+            numbers[0] = Random.Range(2, upperRange);
+            numbers[1] = Random.Range(2, upperRange);
         }
 
         return numbers;
@@ -239,7 +292,20 @@ public class GameplayController : MonoBehaviour
             //select random operator first and then select numbers as random
             //if operator is /(divide) then select both numbers only if number1 is divisible by number2
 
-            string selectedOperator = operators[Random.Range(0, operators.Length)];
+            string selectedOperator = "";
+
+            //if there are easy questions available, ask only questions with + or - operators
+            if (noOfEasyQns > 0)
+            {
+                selectedOperator = operators[Random.Range(0, 2)];
+                noOfEasyQns--;
+                setEasyQn = true;
+            }
+            else
+            {
+                selectedOperator = operators[Random.Range(0, operators.Length)];
+                setEasyQn = false;
+            }
 
             int[] questionNumbers = ChooseNumbers(selectedOperator);
 
@@ -300,7 +366,7 @@ public class GameplayController : MonoBehaviour
         }
     }
 
-      IEnumerator GeneratePotionObject()
+    IEnumerator GeneratePotionObject()
     {
         float timer = Random.Range(minPotionDelay, maxPotionDelay) / playerController.frontSpeed;
         yield return new WaitForSeconds(timer);

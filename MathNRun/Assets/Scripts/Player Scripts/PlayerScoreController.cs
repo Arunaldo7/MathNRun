@@ -27,6 +27,7 @@ public class PlayerScoreController : MonoBehaviour
         coinText.text = GameStateManager.instance.currentCoins.ToString();
         correctAnswerCountText.text = GameStateManager.instance.currentCorrectAns.ToString();
         potionCountText.text = GameStateManager.instance.potionCount.ToString();
+        magicPotionCountText.text = GameStateManager.instance.magicPotionCount.ToString();
     }
 
     // Update is called once per frame

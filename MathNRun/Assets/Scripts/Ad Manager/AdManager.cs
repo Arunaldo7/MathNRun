@@ -18,6 +18,14 @@ public class AdManager : MonoBehaviour
 
     private const string rewardAdId = "ca-app-pub-3940256099942544/5224354917";
 
+    private string rewardType;
+
+    private const string extrLifeReward = "EXTRA LIFE";
+    private const string lifePotionReward = "LIFE POTION";
+    private const string magicPotionReward = "MAGIC POTION";
+
+    private const string coinPurchaseReward = "BUY COINS";
+
     // Create Singleton Pattern
     private void Awake()
     {
@@ -70,10 +78,50 @@ public class AdManager : MonoBehaviour
         rewardAd.LoadAd(adRequest, rewardAdId);
     }
 
-    public void ShowRewardAd()
+    public void ShowLifeRewardAd()
     {
         if (rewardAd.IsLoaded())
         {
+            rewardType = extrLifeReward;
+            rewardAd.Show();
+        }
+        else
+        {
+            Debug.Log("Reward Ad Not Loaded");
+        }
+    }
+
+    public void ShowLifePotionRewardAd()
+    {
+        if (rewardAd.IsLoaded())
+        {
+            rewardType = lifePotionReward;
+            rewardAd.Show();
+        }
+        else
+        {
+            Debug.Log("Reward Ad Not Loaded");
+        }
+    }
+
+    public void ShowMagicPotionRewardAd()
+    {
+        if (rewardAd.IsLoaded())
+        {
+            rewardType = magicPotionReward;
+            rewardAd.Show();
+        }
+        else
+        {
+            Debug.Log("Reward Ad Not Loaded");
+        }
+    }
+
+    public void ShowCoinPurchaseRewardAd()
+    {
+        if (rewardAd.IsLoaded())
+        {
+            rewardType = coinPurchaseReward;
             rewardAd.Show();
         }
         else
@@ -88,10 +136,26 @@ public class AdManager : MonoBehaviour
         double amount = reward.Amount;
 
         Debug.Log("You have been awarded with " + amount.ToString() + " " + type);
-        
-        DestroyNearbyObjects();
-        GamePanelController.instance.ResumeGame();
+        if (rewardType == extrLifeReward)
+        {
+            DestroyNearbyObjects();
+            GamePanelController.instance.ResumeGame();
+        }
+        else if (rewardType == lifePotionReward)
+        {
+            ShopController.instance.PurchasePotionFreeItem();
+        }
+        else if (rewardType == magicPotionReward)
+        {
+            ShopController.instance.PurchaseMagicPotionFreeItem();
+        }
+        else
+        {
+            GameStateManager.instance.totalCoins = GameStateManager.instance.totalCoins + 1000;
 
+            GameStateManager.instance.SaveData();
+            MainmenuController.instance.DisplayGameState();
+        }
     }
 
     void DestroyNearbyObjects()

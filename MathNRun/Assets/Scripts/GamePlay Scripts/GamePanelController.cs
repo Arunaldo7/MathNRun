@@ -12,9 +12,14 @@ public class GamePanelController : MonoBehaviour
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private GameObject countdownPanel;
     [SerializeField] private GameObject pauseButton;
+    [SerializeField] private GameObject easyQuestionButton;
     [SerializeField] private Text countdownTimerText;
 
-    [SerializeField] public Text potionCountText;
+    [SerializeField] public Text lifePotionCountText;
+
+
+    [SerializeField] public Text easyQuestionPotionText;
+    [SerializeField] public Text easyQuestionCountText;
 
     [SerializeField] public GameObject question;
 
@@ -38,14 +43,19 @@ public class GamePanelController : MonoBehaviour
         HidePausePanel();
     }
 
-    void Update(){
+    void Update()
+    {
         //when question is displayed, pause button will not show up
         if (question.gameObject.activeInHierarchy)
         {
             pauseButton.SetActive(false);
-        }else{
+        }
+        else
+        {
             pauseButton.SetActive(true);
         }
+
+        easyQuestionCountText.text = GameplayController.instance.noOfEasyQns.ToString();
     }
 
     public void ShowGameOverPanel()
@@ -114,11 +124,19 @@ public class GamePanelController : MonoBehaviour
         }
     }
 
-    public void UsePotion(){
+    public void UsePotion()
+    {
         GameStateManager.instance.potionCount = GameStateManager.instance.potionCount - 1;
-        potionCountText.text = GameStateManager.instance.potionCount.ToString();
+        lifePotionCountText.text = GameStateManager.instance.potionCount.ToString();
         GameplayController.instance.DestroyNearObjects();
         ResumeGame();
+    }
+
+    public void UseEasyQnPotion()
+    {
+        GameStateManager.instance.magicPotionCount = GameStateManager.instance.magicPotionCount - 1;
+        easyQuestionPotionText.text = GameStateManager.instance.magicPotionCount.ToString();
+        GameplayController.instance.noOfEasyQns = GameplayController.instance.noOfEasyQns + 5;
     }
 
     public void LoadMainMenu()

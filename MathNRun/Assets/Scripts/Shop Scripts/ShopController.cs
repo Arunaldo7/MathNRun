@@ -30,21 +30,36 @@ public class ShopController : MonoBehaviour
 
 
 
-    private void PurchasePotion(int itemNumber, string potionType){
-        int itemPrice =  int.Parse(potionItemList[itemNumber].itemPrice.text);
-        string itemQuantityText = potionItemList[itemNumber].itemQuantity.text;
-        itemQuantityText = itemQuantityText.Replace("x", "").Trim();
-        int itemQuantity =  int.Parse(itemQuantityText);
-
-        GameStateManager.instance.totalCoins = GameStateManager.instance.totalCoins - itemPrice;
-        if(potionType == "Life Potion"){
-        GameStateManager.instance.potionCount = GameStateManager.instance.potionCount + itemQuantity;
+    private void PurchasePotion(int itemNumber, string potionType)
+    {
+        int itemQuantity;
+        if (itemNumber != -1)
+        {
+            int itemPrice = int.Parse(potionItemList[itemNumber].itemPrice.text);
+            string itemQuantityText = potionItemList[itemNumber].itemQuantity.text;
+            itemQuantityText = itemQuantityText.Replace("x", "").Trim();
+            itemQuantity = int.Parse(itemQuantityText);
+            GameStateManager.instance.totalCoins = GameStateManager.instance.totalCoins - itemPrice;
         }else{
+            itemQuantity = 1;
+        }
+
+        if (potionType == "Life Potion")
+        {
+            GameStateManager.instance.potionCount = GameStateManager.instance.potionCount + itemQuantity;
+        }
+        else
+        {
             GameStateManager.instance.magicPotionCount = GameStateManager.instance.magicPotionCount + itemQuantity;
         }
 
         GameStateManager.instance.SaveData();
         MainmenuController.instance.DisplayGameState();
+    }
+
+    public void PurchasePotionFreeItem()
+    {
+        PurchasePotion(-1, "Life Potion");
     }
 
     public void PurchasePotionItemOne()
@@ -60,6 +75,11 @@ public class ShopController : MonoBehaviour
     public void PurchasePotionItemThree()
     {
         PurchasePotion(2, "Life Potion");
+    }
+
+    public void PurchaseMagicPotionFreeItem()
+    {
+        PurchasePotion(-1, "Magic Potion");
     }
 
     public void PurchaseMagicPotionItemOne()
